@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                  // 최신 JavaScript 문법 지원
+    "module": "CommonJS",                 // Node.js 환경에서 사용하기 위해 CommonJS 모듈 시스템 설정
+    "lib": ["ESNext", "DOM"],             // 최신 JavaScript 기능과 브라우저 환경(`document`, `window`) 지원
+    "outDir": "./dist",                   // 컴파일된 JS 파일의 출력 디렉토리
+    "rootDir": "./src",                   // TypeScript 소스 코드 디렉토리
+    "strict": true,                        // 엄격한 타입 검사 활성화
+    "esModuleInterop": true,               // ES 모듈과 CommonJS 모듈 간의 호환성 활성화
+    "forceConsistentCasingInFileNames": true, // 파일 이름 대소문자 일관성 유지
+    "skipLibCheck": true                   // 라이브러리 파일의 타입 검사를 건너뜸 (빌드 속도 향상)
+  },
+  "include": ["src"],                      // 컴파일할 TypeScript 파일이 위치한 디렉토리
+  "exclude": ["node_modules", "dist"]      // 제외할 디렉토리 (빌드 대상 아님)
+}

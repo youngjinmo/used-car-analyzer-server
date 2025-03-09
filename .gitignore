@@ -1,0 +1,6 @@
+.idea
+.DS_Store
+.env
+.impl
+package-lock.json
+node_modules/
