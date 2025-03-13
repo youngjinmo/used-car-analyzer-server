@@ -1,14 +1,15 @@
 {
   "name": "encar-crawler",
   "version": "0.0.1",
-  "description": "",
-  "main": "app.ts",
+  "description": "analyze used-car",
+  "main": "dist/app.js",
   "scripts": {
-    "start": "ts-node app.ts",
+    "build": "tsc",
+    "start": "npm run build && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Andy Mo",
   "license": "ISC",
   "dependencies": {
     "@types/express": "^5.0.0",
