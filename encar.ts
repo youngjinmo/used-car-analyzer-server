@@ -1,5 +1,7 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
 
+interface CarDatas extends CarInfo, CarHistory, InsuranceHistory {}
+
 interface CarInfo {
     carId: string; // 엔카 차량등록번호
     price: string; // 엔카 차량판매가격
@@ -25,6 +27,19 @@ interface InsuranceHistory {
     insuranceAccidentCnt: number, // 보험이력횟수 (내차피해)
 }
 
+function makeCarDatas(carInfo: CarInfo, carHistory: CarHistory, insuranceHistory: InsuranceHistory): CarDatas {
+    return {
+        ...carInfo,
+        ...carHistory,
+        ...insuranceHistory,
+    };
+}
+
+// 엔카 차량 상세 페이지 URL 파싱
+function parseEncarUrl(url: string): string {
+    return url.split("?")[0];
+}
+
 // 엔카 차량 상세 페이지 크롤링
 async function scrapeCarInfo(url: string): Promise<CarInfo> {
     const browser: Browser = await puppeteer.launch({ headless: false });
@@ -32,10 +47,10 @@ async function scrapeCarInfo(url: string): Promise<CarInfo> {
     try {
         // 1️⃣ 엔카 차량 상세 페이지 열기
         const page: Page = await browser.newPage();
-        await page.setViewport({
-            width: 1200,
-            height: 750,
-        });
+        // await page.setViewport({
+        //     width: 1200,
+        //     height: 750,
+        // });
 
         await page.goto(url, { waitUntil: 'networkidle2' });
 
@@ -339,11 +354,19 @@ async function scrapeInsuranceHistory(carId: string): Promise<InsuranceHistory> 
     }
 }
 
+async function parseEncar(url: string): Promise<CarDatas> {
+    console.log("🚗 엔카 차량 정보 스크래핑 시작 : ", url);
+
+    // parse car info
+    const carInfo = await scrapeCarInfo(parseEncarUrl(url));
+    const carHistories= await scrapeCarHistory(carInfo.carId);
+    const insuranceHistories = await scrapeInsuranceHistory(carInfo.carId);
+
+    console.log("🚗 엔카 크롤링 종료.");
+    return makeCarDatas(carInfo, carHistories, insuranceHistories);
+}
+
 export {
-    CarInfo,
-    CarHistory,
-    InsuranceHistory,
-    scrapeCarInfo,
-    scrapeCarHistory,
-    scrapeInsuranceHistory
+    CarDatas,
+    parseEncar,
 };
